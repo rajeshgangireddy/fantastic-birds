@@ -1,0 +1,11 @@
+# Core dependencies
+ultralytics>=8.0.0
+opencv-python-headless
+numpy
+requests
+
+# Pi Camera (already installed on Raspberry Pi OS, but listed for reference)
+# picamera2
+
+# Optional: for MQTT support (uncomment if needed)
+# paho-mqtt
