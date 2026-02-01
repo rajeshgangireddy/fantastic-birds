@@ -1,0 +1,14 @@
+# Core dependencies (lightweight - works on Raspberry Pi!)
+opencv-python-headless
+numpy
+requests
+
+# Pi Camera (pre-installed on Raspberry Pi OS)
+# picamera2
+
+# NOTE: ultralytics is NOT needed on Raspberry Pi!
+# The ONNX detector uses only OpenCV DNN.
+# 
+# If you want to use the Ultralytics detector instead,
+# set USE_ONNX_DETECTOR=false in config.py and install:
+# pip install ultralytics torch torchvision --index-url https://www.piwheels.org/simple

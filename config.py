@@ -52,8 +52,12 @@ MAX_IMAGES = int(os.getenv("MAX_IMAGES", "100"))
 # =============================================================================
 # MODEL CONFIGURATION
 # =============================================================================
-# Path to the NCNN model directory
-MODEL_PATH = os.getenv("MODEL_PATH", "models/yolov8n_ncnn_model")
+# Path to the ONNX model (lightweight, works on Pi)
+MODEL_PATH = os.getenv("MODEL_PATH", "models/yolov8n.onnx")
+
+# Use ONNX detector (True) or Ultralytics NCNN (False)
+# ONNX is recommended for Raspberry Pi - no PyTorch needed!
+USE_ONNX_DETECTOR = os.getenv("USE_ONNX_DETECTOR", "true").lower() == "true"
 
 # =============================================================================
 # LOGGING

@@ -13,8 +13,13 @@ import cv2
 
 import config
 from camera import Camera
-from detector import BirdDetector
 from notifier import HomeAssistantNotifier
+
+# Use ONNX detector (lightweight, no PyTorch) or Ultralytics
+if config.USE_ONNX_DETECTOR:
+    from detector_onnx import BirdDetector
+else:
+    from detector import BirdDetector
 
 # Setup logging
 logging.basicConfig(

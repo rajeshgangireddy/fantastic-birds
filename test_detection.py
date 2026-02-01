@@ -13,7 +13,13 @@ import requests
 import numpy as np
 
 import config
-from detector import BirdDetector
+
+# Use ONNX detector (lightweight, no PyTorch) or Ultralytics
+if config.USE_ONNX_DETECTOR:
+    from detector_onnx import BirdDetector
+else:
+    from detector import BirdDetector
+
 from notifier import HomeAssistantNotifier
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
