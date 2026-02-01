@@ -22,11 +22,12 @@ logger = logging.getLogger(__name__)
 
 def download_sample_bird_image():
     """Download a sample bird image for testing"""
-    # Using a public domain bird image
-    url = "https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Eopsaltria_australis_-_Mogo_Campground.jpg/640px-Eopsaltria_australis_-_Mogo_Campground.jpg"
+    # Using a public domain bird image from Unsplash
+    url = "https://images.unsplash.com/photo-1444464666168-49d633b86797?w=640"
     
     logger.info("Downloading sample bird image...")
-    response = requests.get(url, timeout=30)
+    headers = {"User-Agent": "Mozilla/5.0 (compatible; BirdDetector/1.0)"}
+    response = requests.get(url, timeout=30, headers=headers)
     response.raise_for_status()
     
     # Convert to numpy array
