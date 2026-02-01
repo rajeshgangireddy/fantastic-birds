@@ -4,21 +4,22 @@ After=network.target
 
 [Service]
 Type=simple
-User=pi
-WorkingDirectory=/home/pi/fantastic-birds
-ExecStart=/usr/bin/python3 /home/pi/fantastic-birds/main.py
+User=rajesh
+WorkingDirectory=/home/rajesh/workspace/code/fantastic-birds
+ExecStart=/home/rajesh/workspace/code/fantastic-birds/.venv/bin/python3 /home/rajesh/workspace/code/fantastic-birds/main.py
 Restart=always
 RestartSec=10
 
-# Environment variables (edit these!)
-Environment="HA_URL=http://homeassistant.local:8123"
-Environment="HA_TOKEN=YOUR_LONG_LIVED_ACCESS_TOKEN"
-Environment="HA_MOBILE_NOTIFY_SERVICE=notify.mobile_app_phone"
-Environment="CONFIDENCE_THRESHOLD=0.2"
-Environment="NOTIFICATION_COOLDOWN_SECONDS=60"
-Environment="SAVE_IMAGES=true"
-Environment="IMAGES_DIR=/home/pi/bird_images"
-Environment="LOG_LEVEL=INFO"
+# Environment variables - these override config.py values
+# Remove or comment out if you've set them directly in config.py
+# Environment="HA_URL=http://homeassistant.local:8123"
+# Environment="HA_TOKEN=YOUR_LONG_LIVED_ACCESS_TOKEN"
+# Environment="HA_MOBILE_NOTIFY_SERVICE=notify.mobile_app_phone"
+# Environment="CONFIDENCE_THRESHOLD=0.2"
+# Environment="NOTIFICATION_COOLDOWN_SECONDS=60"
+# Environment="SAVE_IMAGES=true"
+# Environment="IMAGES_DIR=/home/rajesh/bird_images"
+# Environment="LOG_LEVEL=INFO"
 
 [Install]
 WantedBy=multi-user.target
