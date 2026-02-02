@@ -15,7 +15,7 @@ HA_TOKEN = os.getenv("HA_TOKEN", "YOUR_LONG_LIVED_ACCESS_TOKEN")
 
 # Mobile app notification service name (check HA -> Developer Tools -> Services)
 # Usually: notify.mobile_app_<your_phone_name>
-HA_MOBILE_NOTIFY_SERVICE = os.getenv("HA_MOBILE_NOTIFY_SERVICE", "notify.mobile_app_phone")
+HA_MOBILE_NOTIFY_SERVICE = os.getenv("HA_MOBILE_NOTIFY_SERVICE", "notify.mobile_app_pixel_8_pro")
 
 # =============================================================================
 # DETECTION CONFIGURATION
