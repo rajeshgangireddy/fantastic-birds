@@ -44,7 +44,7 @@ CAMERA_HEIGHT = int(os.getenv("CAMERA_HEIGHT", "480"))
 SAVE_IMAGES = os.getenv("SAVE_IMAGES", "true").lower() == "true"
 
 # Directory to save captured bird images
-IMAGES_DIR = os.getenv("IMAGES_DIR", "/home/pi/bird_images")
+IMAGES_DIR = os.getenv("IMAGES_DIR", "/home/workspace/bird_images")
 
 # Maximum number of images to keep (oldest deleted first, 0 = unlimited)
 MAX_IMAGES = int(os.getenv("MAX_IMAGES", "100"))
