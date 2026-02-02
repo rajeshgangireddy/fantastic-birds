@@ -68,6 +68,15 @@ STREAMING_ENABLED = os.getenv("STREAMING_ENABLED", "true").lower() == "true"
 # Port for the streaming server
 STREAMING_PORT = int(os.getenv("STREAMING_PORT", "8081"))
 
+# Target FPS for streaming (higher = smoother but more CPU/bandwidth)
+# Recommended: 15-25 for smooth video, 5-10 for low bandwidth
+STREAMING_FPS = int(os.getenv("STREAMING_FPS", "20"))
+
+# How often to run detection (in frames). Detection is slow on Pi.
+# 1 = every frame (slow), 5 = every 5th frame (faster streaming)
+# At 20 FPS with DETECTION_INTERVAL=5, detection runs 4 times/second
+DETECTION_INTERVAL = int(os.getenv("DETECTION_INTERVAL", "10"))
+
 # =============================================================================
 # LOGGING
 # =============================================================================

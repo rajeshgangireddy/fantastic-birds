@@ -13,6 +13,8 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 
 import cv2
 
+import config
+
 logger = logging.getLogger(__name__)
 
 
@@ -107,8 +109,8 @@ class StreamHandler(BaseHTTPRequestHandler):
                 self.wfile.write(frame)
                 self.wfile.write(b'\r\n')
                 
-                # ~10 FPS for streaming (adjust as needed)
-                time.sleep(0.1)
+                # Use configured FPS
+                time.sleep(1.0 / config.STREAMING_FPS)
         except (BrokenPipeError, ConnectionResetError):
             # Client disconnected - normal behavior
             pass

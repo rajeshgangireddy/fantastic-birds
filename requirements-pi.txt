@@ -3,8 +3,11 @@ opencv-python-headless
 numpy
 requests
 
-# Pi Camera (pre-installed on Raspberry Pi OS)
-# picamera2
+# Pi Camera - MUST be installed via apt, not pip!
+# Run
+#
+# If you're using a virtual environment, create it with --system-site-packages:
+# python3 -m venv --system-site-packages .venv
 
 # NOTE: ultralytics is NOT needed on Raspberry Pi!
 # The ONNX detector uses only OpenCV DNN.

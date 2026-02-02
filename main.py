@@ -140,21 +140,32 @@ def main():
     
     last_notification_time = 0
     frame_count = 0
+    last_detections = None  # Cache detections for streaming overlay
+    frame_interval = 1.0 / config.STREAMING_FPS if config.STREAMING_ENABLED else 0.1
     
+    logger.info(f"Streaming FPS: {config.STREAMING_FPS}, Detection every {config.DETECTION_INTERVAL} frames")
     logger.info("Bird detector running. Press Ctrl+C to stop.")
     
     try:
         while running:
+            loop_start = time.time()
+            
             # Capture frame
             frame = camera.capture_frame()
             frame_count += 1
             
-            # Run detection
-            birds = detector.detect_birds(frame)
+            # Run detection only every N frames (detection is slow on Pi)
+            birds = None
+            if frame_count % config.DETECTION_INTERVAL == 0:
+                birds = detector.detect_birds(frame)
+                if birds:
+                    last_detections = birds  # Cache for overlay
+                else:
+                    last_detections = None
             
-            # Update streaming buffer (with detection boxes if any)
+            # Update streaming buffer (show cached detections on all frames)
             if streamer:
-                streamer.update_frame(frame, birds if birds else None)
+                streamer.update_frame(frame, last_detections)
             
             if birds:
                 current_time = time.time()
@@ -183,8 +194,11 @@ def main():
             if frame_count % 100 == 0:
                 logger.info(f"Processed {frame_count} frames")
             
-            # Small delay to prevent CPU overload
-            time.sleep(0.1)
+            # Maintain target frame rate
+            elapsed = time.time() - loop_start
+            sleep_time = frame_interval - elapsed
+            if sleep_time > 0:
+                time.sleep(sleep_time)
     
     except Exception as e:
         logger.error(f"Error in main loop: {e}", exc_info=True)

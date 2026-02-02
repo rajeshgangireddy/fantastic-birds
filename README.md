@@ -27,10 +27,35 @@ Detect birds using YOLOv8n on a Raspberry Pi 3 with Pi Camera v2, and send notif
 cd ~
 git clone <your-repo-url> fantastic-birds
 cd fantastic-birds
-
-# Install dependencies
-pip3 install -r requirements.txt
 ```
+
+#### Install System Packages (apt)
+
+```bash
+# Update package list
+sudo apt update
+
+# Install picamera2 and dependencies (REQUIRED - cannot be installed via pip!)
+sudo apt install -y python3-picamera2 python3-libcamera python3-kms++
+
+# Install libcamera tools (optional, for testing camera)
+sudo apt install -y libcamera-apps
+```
+
+#### Setup Python Virtual Environment
+
+```bash
+# Create venv WITH access to system packages (needed for picamera2)
+python3 -m venv --system-site-packages .venv
+
+# Activate it
+source .venv/bin/activate
+
+# Install Python dependencies
+pip install -r requirements-pi.txt
+```
+
+> **Important:** The `--system-site-packages` flag is required so the venv can access `picamera2` which is installed system-wide via apt.
 
 ### 2. Setup the Model
 
