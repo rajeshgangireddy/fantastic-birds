@@ -60,6 +60,15 @@ MODEL_PATH = os.getenv("MODEL_PATH", "models/yolov8n.onnx")
 USE_ONNX_DETECTOR = os.getenv("USE_ONNX_DETECTOR", "true").lower() == "true"
 
 # =============================================================================
+# STREAMING CONFIGURATION (for Home Assistant Generic Camera)
+# =============================================================================
+# Enable MJPEG streaming server
+STREAMING_ENABLED = os.getenv("STREAMING_ENABLED", "true").lower() == "true"
+
+# Port for the streaming server
+STREAMING_PORT = int(os.getenv("STREAMING_PORT", "8081"))
+
+# =============================================================================
 # LOGGING
 # =============================================================================
 LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO")

@@ -14,6 +14,7 @@ import cv2
 import config
 from camera import Camera
 from notifier import HomeAssistantNotifier
+from streaming import StreamingServer
 
 # Use ONNX detector (lightweight, no PyTorch) or Ultralytics
 if config.USE_ONNX_DETECTOR:
@@ -117,6 +118,7 @@ def main():
     camera = Camera()
     detector = BirdDetector()
     notifier = HomeAssistantNotifier()
+    streamer = StreamingServer(port=config.STREAMING_PORT) if config.STREAMING_ENABLED else None
     
     # Test Home Assistant connection
     logger.info("Testing Home Assistant connection...")
@@ -127,6 +129,10 @@ def main():
     # Load model
     logger.info("Loading detection model...")
     detector.load()
+    
+    # Start streaming server (if enabled)
+    if streamer:
+        streamer.start()
     
     # Start camera
     logger.info("Starting camera...")
@@ -145,6 +151,10 @@ def main():
             
             # Run detection
             birds = detector.detect_birds(frame)
+            
+            # Update streaming buffer (with detection boxes if any)
+            if streamer:
+                streamer.update_frame(frame, birds if birds else None)
             
             if birds:
                 current_time = time.time()
@@ -181,6 +191,8 @@ def main():
     
     finally:
         logger.info("Shutting down...")
+        if streamer:
+            streamer.stop()
         camera.stop()
         logger.info("Bird detector stopped.")
 

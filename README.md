@@ -7,6 +7,7 @@ Detect birds using YOLOv8n on a Raspberry Pi 3 with Pi Camera v2, and send notif
 - **Real-time bird detection** using YOLOv8n (nano) model
 - **NCNN backend** optimized for ARM/Raspberry Pi
 - **Home Assistant integration** - dashboard + mobile push notifications
+- **Live MJPEG streaming** - view camera feed in Home Assistant with detection overlays
 - **Image capture** - saves snapshots when birds are detected
 - **Configurable** - confidence threshold, cooldown, etc.
 - **Auto-start** - runs as a systemd service
@@ -111,7 +112,48 @@ journalctl -u bird-detector -f
 | `SAVE_IMAGES` | `true` | Save images on detection |
 | `IMAGES_DIR` | `/home/pi/bird_images` | Where to save images |
 | `MAX_IMAGES` | `100` | Max images to keep (0=unlimited) |
+| `STREAMING_ENABLED` | `true` | Enable MJPEG streaming server |
+| `STREAMING_PORT` | `8081` | Port for streaming server |
 | `LOG_LEVEL` | `INFO` | Logging level |
+
+## Live Streaming to Home Assistant
+
+The bird detector includes a built-in MJPEG streaming server that shows the camera feed with detection overlays. When a bird is detected, you'll see green bounding boxes around it in real-time.
+
+### Endpoints
+
+Once running, the following endpoints are available at `http://<pi-ip>:8081`:
+
+| Endpoint | Description |
+|----------|-------------|
+| `/video_feed` | MJPEG stream (for live video) |
+| `/frame.jpg` | Single JPEG frame (for thumbnails) |
+| `/health` | Health check (JSON status) |
+
+### Add to Home Assistant
+
+Add this to your `configuration.yaml`:
+
+```yaml
+camera:
+  - platform: generic
+    name: "Bird Cam"
+    still_image_url: "http://192.168.1.XX:8081/frame.jpg"
+    stream_source: "http://192.168.1.XX:8081/video_feed"
+    verify_ssl: false
+```
+
+Replace `192.168.1.XX` with your Raspberry Pi's IP address.
+
+After adding, restart Home Assistant and you'll have a new camera entity that shows your bird detector feed with live detection overlays!
+
+### Lovelace Card Example
+
+```yaml
+type: picture-entity
+entity: camera.bird_cam
+camera_view: live
+```
 
 ## Project Structure
 
@@ -122,6 +164,7 @@ fantastic-birds/
 ├── camera.py            # Pi Camera capture
 ├── detector.py          # YOLOv8 bird detection
 ├── notifier.py          # Home Assistant notifications
+├── streaming.py         # MJPEG streaming server for HA
 ├── setup_model.py       # Model download/export script
 ├── requirements.txt     # Python dependencies
 ├── bird-detector.service # Systemd service file
