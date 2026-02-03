@@ -191,7 +191,7 @@ def main():
                     logger.debug(f"Cooldown active, {remaining:.0f}s remaining")
             
             # Log progress periodically
-            if frame_count % 100 == 0:
+            if frame_count % 2000 == 0:
                 logger.info(f"Processed {frame_count} frames")
             
             # Maintain target frame rate
