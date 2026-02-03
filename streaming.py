@@ -26,16 +26,16 @@ class FrameBuffer:
         self._lock = threading.Lock()
         self._last_update = 0
     
-    def update(self, frame_rgb, detections=None):
+    def update(self, frame, detections=None):
         """
         Update the buffer with a new frame.
         
         Args:
-            frame_rgb: RGB numpy array from camera
+            frame: BGR numpy array from camera (picamera2 RGB888 is actually BGR)
             detections: Optional list of bird detections to draw
         """
-        # Convert RGB to BGR for OpenCV encoding
-        frame_bgr = cv2.cvtColor(frame_rgb, cv2.COLOR_RGB2BGR)
+        # Frame is already BGR from picamera2 (RGB888 format is actually BGR byte order)
+        frame_bgr = frame
         
         # Draw detection boxes if provided
         if detections:
@@ -170,13 +170,13 @@ class StreamingServer:
             self._thread.join(timeout=2)
             logger.info("Streaming server stopped")
     
-    def update_frame(self, frame_rgb, detections=None):
+    def update_frame(self, frame, detections=None):
         """
         Update the frame buffer with new data.
         Call this from your main detection loop.
         
         Args:
-            frame_rgb: RGB numpy array from camera
+            frame: BGR numpy array from camera
             detections: Optional list of bird detections
         """
-        frame_buffer.update(frame_rgb, detections)
+        frame_buffer.update(frame, detections)

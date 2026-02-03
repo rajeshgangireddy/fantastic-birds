@@ -20,7 +20,8 @@ class Camera:
         logger.info(f"Starting camera at {self.width}x{self.height}")
         self.picam2 = Picamera2()
         
-        # Configure for still capture with RGB format (needed for YOLO)
+        # Configure for still capture
+        # Note: RGB888 format actually outputs BGR byte order on Pi
         camera_config = self.picam2.create_preview_configuration(
             main={"size": (self.width, self.height), "format": "RGB888"}
         )
@@ -29,7 +30,7 @@ class Camera:
         logger.info("Camera started successfully")
     
     def capture_frame(self):
-        """Capture and return a single frame as numpy array (RGB)"""
+        """Capture and return a single frame as numpy array (BGR byte order)"""
         if self.picam2 is None:
             raise RuntimeError("Camera not started. Call start() first.")
         return self.picam2.capture_array()

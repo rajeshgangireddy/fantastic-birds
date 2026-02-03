@@ -68,8 +68,8 @@ def save_detection_image(frame, birds, images_dir):
     if not config.SAVE_IMAGES or images_dir is None:
         return None
     
-    # Convert RGB to BGR for OpenCV
-    frame_bgr = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
+    # Frame is already BGR from picamera2 (RGB888 format is actually BGR byte order)
+    frame_bgr = frame.copy()
     
     # Draw bounding boxes
     for bird in birds:
