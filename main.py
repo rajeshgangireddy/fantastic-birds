@@ -1,6 +1,7 @@
 """
 Main application loop for bird detection
 """
+import gc
 import os
 import sys
 import time
@@ -142,6 +143,7 @@ def main():
     frame_count = 0
     last_detections = None  # Cache detections for streaming overlay
     frame_interval = 1.0 / config.STREAMING_FPS if config.STREAMING_ENABLED else 0.1
+    last_gc_time = time.time()
     
     logger.info(f"Streaming FPS: {config.STREAMING_FPS}, Detection every {config.DETECTION_INTERVAL} frames")
     logger.info("Bird detector running. Press Ctrl+C to stop.")
@@ -193,6 +195,11 @@ def main():
             # Log progress periodically
             if frame_count % 2000 == 0:
                 logger.info(f"Processed {frame_count} frames")
+            
+            # Periodic garbage collection to prevent memory buildup
+            if time.time() - last_gc_time > 300:  # Every 5 minutes
+                gc.collect()
+                last_gc_time = time.time()
             
             # Maintain target frame rate
             elapsed = time.time() - loop_start
